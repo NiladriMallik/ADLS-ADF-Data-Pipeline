@@ -1,5 +1,7 @@
 <h1> Azure Data Pipeline: ADLS -> ADF Data Flow -> Azure SQL</h1>
 
+This is a simple pipeline that is auto-triggered when a new parquet file arrives in "SourceParquet" directory in a data lake container. This data pipeline performs basic data transformations and copies the data into an Azure SQL database inside an Azure SQL Server. After the data is copied to the database, the original parquet file is moved to another "DestinationCSV" directory and stored in CSV format, and the parquet file is deleted 
+
 <h2>Architecture Diagram</h2>
 * ADLS - Source Parquet folder <br>
 * Azure Data Factory<br>
@@ -93,3 +95,31 @@ Sink
 ![Azure SQL table sink](<ADF - ADLS to SQL table data flow - Sink.png>)
 
 #### Copy data flow
+ADF - Copy activity to move Files to DestinationCSV directory
+![ADF - Move Files to DestinationCSV directory copy activity](<ADF - Move Files to Processed copy activity.png>)
+
+ADF - Copy activity to move Files to DestinationCSV directory - Source
+![ADF - Move Files to DestinationCSV copy activity - Source](<ADF - Move Files to Processed copy activity - Source.png>)
+
+ADF - Copy activity to move Files to DestinationCSV directory - Sink
+![ADF - Move Files to DestinationCSV copy activity - Sink](<ADF - Move Files to Processed copy activity - Sink.png>)
+
+File arrival trigger
+![ADF - trigger - New parquet file arrival](<ADF - trigger - New parquet file arrival.png>)
+
+New Parquet File Arrival auto triggers the pipeline
+![New Parquet File Arrival auto trigger](<ADF - New Parquet File Arrival auto trigger.png>)
+
+Pipeline run status
+Pipeline run in progress
+![Pipeline run in progress](<ADF - ETL Pipeline monitoring.png>)
+
+The ETL pipeline is completed, data is copied to Azure SQL database. Next, moving the parquet file to DestinationCSV directory in Data Lake container in CSV format.
+![ADF - ETL Pipeline success - auto moving file to DestinationCSV directory in ADLS](<ADF - ETL Pipeline success - auto moving file to Processed directory in ADLS.png>)
+
+Copy data activity completed.
+![ADF - Move parquet file to DestinationCSV directory in csv format succeeded](<ADF - Move parquet file to processed directory in csv format succeeded.png>)
+
+
+Parquet file moved to Processed directory in data lake.
+![Azure Data Lake storage - Parquet file copied from source directory to csv format in DestinationCSV directory](<Azure Data Lake storage - Parquet file copied from source directory to csv format in processed directory.png>)
